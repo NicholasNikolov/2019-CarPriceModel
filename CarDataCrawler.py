@@ -15,62 +15,56 @@ import pandas as pd
 import numpy as np
 
 
+def DataFrameBuilder():
+    # This assumes that all cars have the same variables
+    link = 'https://www.carspecs.us/cars/2019/acura/mdx'
+    NewResponse = requests.get(link)
+    variables = []
+    for i in range(72):
+        variables.append(BeautifulSoup(NewResponse.text,
+                                       'html.parser')
+                                        .findAll(True,{'class':'pure-u-1 pure-u-md-1-2'})[i]
+                                        .get_text().strip()
+                                        .split('\r\n')[0])
+    CarData = pd.DataFrame(columns = variables)
+    print(CarData.columns)
+    
 
-def LinkCreator():
+
+
+
+
+def DataFiller(make,year):
     # Create reference to main webpage that will be used to seek out various car makes and models
     url = 'https://www.carspecs.us/'
     response = requests.get(url)
     
     # The beautiful soup result of parsing the main page. Will search for links to pursue
     bsMain = BeautifulSoup(response.text,"html.parser")
+    make = make
+    year = str(year)
     
-    for i in range(24,92):
-        MainLinkList = bsMain.findAll('a')
-        make = MainLinkList[i]['href']
-        NewUrl = url + make[1:]
-        
-        NewResponse = requests.get(NewUrl)
-        
-        bsYears = BeautifulSoup(NewResponse.text,'html.parser')
-        
-        # The considered years for data. Only cars of the following years will be used
-        yr2019 = [x for x, y in enumerate(bsYears.findAll('a')) if '2019' in y]
-        
-        if yr2019:
-            yr2019 = yr2019[0]
-            
-            # Get the year part of link to append to make like
-            year = bsYears.findAll('a')[yr2019]['href']
+    ModelPageUrl = url + "cars/" + year + "/" + make
 
-            # New url with years
-            NewUrl = url + year[1:]
-            
-            # Selecting the model
-            NewResponse = requests.get(NewUrl)
+    NewResponse = requests.get(ModelPageUrl)
+    bsModels = BeautifulSoup(NewResponse.text,'html.parser')
+    LinkList = bsModels.findAll('a')
+    
+    ModelLowIndex = [x for x, y in enumerate(bsModels.findAll('a')) if 'Cars' in y][0]
+    ModelHighIndex = [x for x, y in enumerate(bsModels.findAll('a')) if 'Privacy Policy' in y][0]
 
-            bsModels = BeautifulSoup(NewResponse.text,'html.parser')
+    model = LinkList[ModelLowIndex+2]['href']
+    SpecSheetUrl = url + model[1:]
+    print('success')
 
-            MainLinkList = bsModels.findAll('a')
-            
-            
-            # This separates the list of links from the rest of the page. It seems this always appears between
-            # Cars and privacy policy. Note, if this changes, this code might become deprecated.
-            ModelLowIndex = [x for x, y in enumerate(bsYears.findAll('a')) if 'Cars' in y][0]
-            ModelHighIndex = [x for x, y in enumerate(bsYears.findAll('a')) if 'Privacy Policy' in y][0]
-            
-            # Create the loop here to go through the models and eventually
-            # and save to array or run another function to populate the dataframe
-            
-        yr2018 = [x for x, y in enumerate(bsYears.findAll('a')) if '2018' in y]
-        
-        if yr2018:
-            yr2018 = yr2018[0]
-       # year19 = bsYears.findAll('a')[yr2019]['href']
-       # year18 = bsYears.findAll('a')[yr2018]['href']
-        
-       # NewUrl19 = url + year19[1:]
-      #  NewUrl18 = url + year18[1:]
-        
-       # print(NewUrl19)
-        
-LinkCreator()
+    
+    
+    
+    
+    
+
+
+
+
+
+
