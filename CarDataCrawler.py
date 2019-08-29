@@ -15,6 +15,7 @@ import pandas as pd
 import numpy as np
 
 
+# This method builds the actual dataframe which will be filled with data
 def DataFrameBuilder():
     # This assumes that all cars have the same variables
     link = 'https://www.carspecs.us/cars/2019/acura/mdx'
@@ -27,14 +28,23 @@ def DataFrameBuilder():
                                         .get_text().strip()
                                         .split('\r\n')[0])
     CarData = pd.DataFrame(columns = variables)
-    print(CarData.columns)
+    print('success')
+    return(CarData)
+    
+    
+    
+    
+def MakeList():
+    link = 'https://carspecs.us'
+    response = requests.get(link)
+    makes = []
+    
     
 
 
 
-
-
-def DataFiller(make,year):
+# This method will extract URL's for the designated makes and years.
+def UrlSeeker(make,year):
     # Create reference to main webpage that will be used to seek out various car makes and models
     url = 'https://www.carspecs.us/'
     response = requests.get(url)
@@ -58,7 +68,9 @@ def DataFiller(make,year):
     print('success')
 
     
-    
+
+
+
     
     
     
