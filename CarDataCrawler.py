@@ -33,14 +33,20 @@ def DataFrameBuilder():
     
     
     
-    
+# This method uses pre-determined indices to extract all makes from the homepage.
 def MakeList():
-    link = 'https://carspecs.us'
+    link = 'https://www.carspecs.us/'
     response = requests.get(link)
     makes = []
+    # Current list index is 24 to 91 as of Aug 29, 2019
+    for i in range(24,91):
+        makes.append(BeautifulSoup(response.text).findAll('a')[i]
+                                        .get_text())
+    return(makes)
     
     
-
+    
+MakeList()
 
 
 # This method will extract URL's for the designated makes and years.
