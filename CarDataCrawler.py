@@ -79,8 +79,33 @@ def UrlSeeker(make,year):
     for j in range(len(model)):
         specUrl = url + model[j][1:]
         SpecSheetUrl.append(specUrl)
-    print(SpecSheetUrl)
+    return(SpecSheetUrl)
 
+# Method to get all of the models in the particular make. Works similar to URLSeeker
+def ModelList(make,year):
+    url = 'https://www.carspecs.us/'
+    response = requests.get(url)
+    
+    # The beautiful soup result of parsing the main page. Will search for links to pursue
+    bsMain = BeautifulSoup(response.text,"html.parser")
+    make = make
+    year = str(year)
+    
+    ModelPageUrl = url + "cars/" + year + "/" + make
+
+    NewResponse = requests.get(ModelPageUrl)
+    bsModels = BeautifulSoup(NewResponse.text,'html.parser')
+    LinkList = bsModels.findAll('a')
+    
+    ModelLowIndex = [x for x, y in enumerate(bsModels.findAll('a')) if 'Cars' in y][0]
+    ModelHighIndex = [x for x, y in enumerate(bsModels.findAll('a')) if 'Privacy Policy' in y][0]
+    
+    ModelList = []
+    for i in range(ModelLowIndex,ModelHighIndex-2):
+        ModelList.append(LinkList[i+2].get_text())
+    
+    return(ModelList)
+    
 
 # The datafilling method that will actually get the necessary data in
 def DataFiller(make,model,year):
@@ -102,9 +127,26 @@ def DataFiller(make,model,year):
     return(data)
 
 
-UrlSeeker('acura',2019)
+def MainMethod(year):
+    year = year
+    makes = MakeList()
+    data = DataFrameBuilder()
 
+    for make in makes:
+        UrlList = UrlSeeker(make,year)
+        ModelList = ModelList(make,year)
+        
+        for model in len(ModelList):
+            obsv = DataFiller(make,model,year)
+            data.append(obsv)
+            
+    return(data)
+    
+MainMethod(2019)
+            
+            
 
-
+            
+            
 
 
