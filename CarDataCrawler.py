@@ -108,7 +108,8 @@ def ModelList(make,year):
     
 
 # The datafilling method that will actually get the necessary data in
-def DataFiller(make,model,year):
+def DataFiller(make,model,year,url):
+    NewResponse = requests.get(url)
     make = make
     model = model
     year = str(year)
@@ -137,10 +138,11 @@ def MainMethod(year):
         UrlList = UrlSeeker(make.lower(),year)
         models = ModelList(make,year)
         
-        for model in len(ModelList):
-            obsv = DataFiller(make,model,year)
+        for z,model in enumerate(ModelList):
+            url = UrlList[z]
+            obsv = DataFiller(make,model,year,url)
             data.append(obsv)
-    sleep(5)
+    time.sleep(5)
             
     return(data)
     
