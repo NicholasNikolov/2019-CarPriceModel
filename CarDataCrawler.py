@@ -27,6 +27,9 @@ def DataFrameBuilder():
                                         .findAll(True,{'class':'pure-u-1 pure-u-md-1-2'})[i]
                                         .get_text().strip()
                                         .split('\r\n')[0])
+    variables.insert(0,'Make')
+    variables.insert(1,'Model')
+    variables.insert(2,'Year')
     CarData = pd.DataFrame(columns = variables)
     print('success')
     return(CarData)
@@ -46,7 +49,6 @@ def MakeList():
     
     
     
-MakeList()
 
 
 # This method will extract URL's for the designated makes and years.
@@ -68,19 +70,39 @@ def UrlSeeker(make,year):
     
     ModelLowIndex = [x for x, y in enumerate(bsModels.findAll('a')) if 'Cars' in y][0]
     ModelHighIndex = [x for x, y in enumerate(bsModels.findAll('a')) if 'Privacy Policy' in y][0]
-
-    model = LinkList[ModelLowIndex+2]['href']
-    SpecSheetUrl = url + model[1:]
-    print('success')
-
     
+    model = []
+    SpecSheetUrl = []
+    for i in range(ModelLowIndex,ModelHighIndex-2):
+        model.append(LinkList[i+2]['href'])
+
+    for j in range(len(model)):
+        specUrl = url + model[j][1:]
+        SpecSheetUrl.append(specUrl)
+    print(SpecSheetUrl)
 
 
-
+# The datafilling method that will actually get the necessary data in
+def DataFiller(make,model,year):
+    make = make
+    model = model
+    year = str(year)
     
+    data = []
+    for i in range(72):
+        data.append(BeautifulSoup(NewResponse.text,'html.parser')
+        .findAll(True,{'class':'pure-u-1 pure-u-md-1-2'})[i]
+        .get_text().strip()
+        .split('\r\n')[1])
+        
+    data.insert(0,make)
+    data.insert(1,model)
+    data.insert(2,year)
     
-    
+    return(data)
 
+
+UrlSeeker('acura',2019)
 
 
 
