@@ -131,14 +131,16 @@ def MainMethod(year):
     year = year
     makes = MakeList()
     data = DataFrameBuilder()
-
+    print(makes)
+    print(year)
     for make in makes:
-        UrlList = UrlSeeker(make,year)
-        ModelList = ModelList(make,year)
+        UrlList = UrlSeeker(make.lower(),year)
+        models = ModelList(make,year)
         
         for model in len(ModelList):
             obsv = DataFiller(make,model,year)
             data.append(obsv)
+    sleep(5)
             
     return(data)
     
