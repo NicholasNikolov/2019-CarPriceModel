@@ -109,13 +109,15 @@ def ModelList(make,year):
 
 # The datafilling method that will actually get the necessary data in
 def DataFiller(make,model,year,url):
+    url = url
     NewResponse = requests.get(url)
     make = make
     model = model
     year = str(year)
     
     data = []
-    for i in range(72):
+    columns = len(BeautifulSoup(NewResponse.text,'html.parser').findAll(True,{'class':'pure-u-1 pure-u-md-1-2'}))-1
+    for i in range(columns):
         data.append(BeautifulSoup(NewResponse.text,'html.parser')
         .findAll(True,{'class':'pure-u-1 pure-u-md-1-2'})[i]
         .get_text().strip()
@@ -124,6 +126,10 @@ def DataFiller(make,model,year,url):
     data.insert(0,make)
     data.insert(1,model)
     data.insert(2,year)
+    
+    if columns < 72:
+        for columns in range(columns,72):
+            data.append("null")
     
     return(data)
 
@@ -136,20 +142,19 @@ def MainMethod(year):
     print(year)
     for make in makes:
         UrlList = UrlSeeker(make.lower(),year)
-        models = ModelList(make,year)
+        models = ModelList(make.lower(),year)
         
-        for z,model in enumerate(ModelList):
+        for z,model in enumerate(models):
             url = UrlList[z]
             obsv = DataFiller(make,model,year,url)
-            data.append(obsv)
+            data.loc[len(data)+1] = obsv
+            
+            print(data)
     time.sleep(5)
             
     return(data)
-    
-MainMethod(2019)
-            
-            
 
+MainMethod(2019)
             
             
 
