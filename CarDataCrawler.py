@@ -118,24 +118,33 @@ def DataFiller(make,model,year,url):
     NewResponse = requests.get(url)
     make = make
     model = model
+    df = DataFrameBuilder()
     
     year = str(year)
     
-    data = []
+    data = np.zeros(71,dtype=object)
     columns = len(BeautifulSoup(NewResponse.text,'html.parser').findAll(True,{'class':'pure-u-1 pure-u-md-1-2'}))-1
     for i in range(columns):
-        data.append(BeautifulSoup(NewResponse.text,'html.parser')
-        .findAll(True,{'class':'pure-u-1 pure-u-md-1-2'})[i]
-        .get_text().strip()
-        .split('\r\n')[1])
+        entry = BeautifulSoup(NewResponse.text,'html.parser').findAll(True,{'class':'pure-u-1 pure-u-md-1-2'})[i].get_text().strip().split('\r\n')[1]
+        variable = BeautifulSoup(NewResponse.text,'html.parser').findAll(True,{'class':'pure-u-1 pure-u-md-1-2'})[i].get_text().strip().split('\r\n')[0]
         
-    data.insert(0,make)
-    data.insert(1,model)
-    data.insert(2,year)
+        if variable in df.columns:
+            data[i] = entry
+        else:
+            data[i] = "Null"
+        
+        # data.append(entry)
+        
+    data[0] = make
+    data[1] = model
+    data[2] = year
+    print("Shape of entry: ", len(data))
     
-    if columns < 72:
-        for columns in range(columns,72):
-            data.append("null")
+# =============================================================================
+#     if columns < 72:
+#         for columns in range(columns,72):
+#             data.append("null")
+# =============================================================================
     
     return(data)
 
