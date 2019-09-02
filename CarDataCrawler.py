@@ -58,9 +58,11 @@ def UrlSeeker(make,year):
     response = requests.get(url)
     
     # The beautiful soup result of parsing the main page. Will search for links to pursue
-    bsMain = BeautifulSoup(response.text,"html.parser")
+    # bsMain = BeautifulSoup(response.text,"html.parser")
     make = make
     year = str(year)
+    
+    make = make.replace(" ","-")
     
     ModelPageUrl = url + "cars/" + year + "/" + make
 
@@ -89,6 +91,7 @@ def ModelList(make,year):
     # The beautiful soup result of parsing the main page. Will search for links to pursue
     bsMain = BeautifulSoup(response.text,"html.parser")
     make = make
+    make = make.replace(" ","-")
     year = str(year)
     
     ModelPageUrl = url + "cars/" + year + "/" + make
@@ -96,8 +99,10 @@ def ModelList(make,year):
     NewResponse = requests.get(ModelPageUrl)
     bsModels = BeautifulSoup(NewResponse.text,'html.parser')
     LinkList = bsModels.findAll('a')
+    print(LinkList)
     
-    ModelLowIndex = [x for x, y in enumerate(bsModels.findAll('a')) if 'Cars' in y][0]
+    print("Entering Model Low Index")
+    ModelLowIndex = [x for x, y in enumerate(LinkList) if 'Cars' in y][0]
     ModelHighIndex = [x for x, y in enumerate(bsModels.findAll('a')) if 'Privacy Policy' in y][0]
     
     ModelList = []
@@ -113,6 +118,7 @@ def DataFiller(make,model,year,url):
     NewResponse = requests.get(url)
     make = make
     model = model
+    
     year = str(year)
     
     data = []
@@ -154,7 +160,7 @@ def MainMethod(year):
             
     return(data)
 
-MainMethod(2019)
+MainMethod(2018)
             
             
 
