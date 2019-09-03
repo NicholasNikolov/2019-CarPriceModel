@@ -115,7 +115,7 @@ def UrlSeeker(make,year):
 df = DataFrameBuilder()
 dfColumns = df.columns
 #makes = MakeList()
-makes = ['Acura','Aston Martin']
+makes = ['Acura']
 year = 2019
 for make in makes:
     urls = UrlSeeker(make,year)
@@ -132,8 +132,11 @@ for make in makes:
             
             dataLength = len(BeautifulSoup(NewResponse.text,'html.parser').findAll(True,{'class':'pure-u-1 pure-u-md-1-2'}))
             
-            for j in range(dataLength-1):
-                print("Third Entry Item: ",df.loc[df.index[j-1],variable])
+            #for j in range(dataLength-1):
+            j = 0
+            count = 0
+            while j < dataLength-1:
+                #print("Third Entry Item: ",df.loc[df.index[j-1],variable])
                 try:
                     entry = BeautifulSoup(NewResponse.text,'html.parser').findAll(True,{'class':'pure-u-1 pure-u-md-1-2'})[j].get_text().strip().split('\r\n')[1]
                     variable = BeautifulSoup(NewResponse.text,'html.parser').findAll(True,{'class':'pure-u-1 pure-u-md-1-2'})[j].get_text().strip().split('\r\n')[0]
@@ -156,13 +159,19 @@ for make in makes:
                         print("First Entry Item: ",df.loc[df.index[j],variable])
                         # print("!!!!!!!!!!!!!Entry!!!!!!!!!!!!!!!: ",df.loc[df.index[j],variable])
                         # df[variable].loc[j] = entry
-                        #print("DATAFRAME AT VARIABLE AND J: ",df[variable][j])
                     
                     except TypeError:
                         print("Type Error Appeared")
                         #df[variable][j] = "Null"
                         pass
                 print("Second Entry Item: ",df.loc[df.index[j],variable])
+                count = count + 1
+                if count == 72:
+                    j+=1
+                    count = 0
+                print("Fourth Entry: ",df.loc[df.index[0],'Passenger Capacity'])
+                print("Count Value: ",count)
+                
 # =============================================================================
 #                 else:
 #                     print("ENTERED ELSE STATEMENT")
@@ -174,7 +183,7 @@ duration = 10000  # milliseconds
 freq = 550  # Hz
 winsound.Beep(freq, duration)
                         
-
+df.to_csv("test.csv")
 
 
 
