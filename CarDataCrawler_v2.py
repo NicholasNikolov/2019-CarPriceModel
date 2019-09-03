@@ -114,8 +114,8 @@ def UrlSeeker(make,year):
     
 df = DataFrameBuilder()
 dfColumns = df.columns
-makes = MakeList()
-
+#makes = MakeList()
+makes = ['Acura','Aston Martin']
 year = 2019
 for make in makes:
     urls = UrlSeeker(make,year)
@@ -133,13 +133,15 @@ for make in makes:
             dataLength = len(BeautifulSoup(NewResponse.text,'html.parser').findAll(True,{'class':'pure-u-1 pure-u-md-1-2'}))
             
             for j in range(dataLength-1):
+                print("Third Entry Item: ",df.loc[df.index[j-1],variable])
                 try:
                     entry = BeautifulSoup(NewResponse.text,'html.parser').findAll(True,{'class':'pure-u-1 pure-u-md-1-2'})[j].get_text().strip().split('\r\n')[1]
                     variable = BeautifulSoup(NewResponse.text,'html.parser').findAll(True,{'class':'pure-u-1 pure-u-md-1-2'})[j].get_text().strip().split('\r\n')[0]
 
                 except IndexError:
-                    "Index Error for mismatch count of pure-u-1 pure-u-md-1-2"
+                    #"Index Error for mismatch count of pure-u-1 pure-u-md-1-2"
                     pass
+                print("Fourth Entry Item: ",df.loc[df.index[j-1],variable])
 
                 print(j)
                 print("Variable: ",variable," Entry: ", entry)
@@ -151,6 +153,7 @@ for make in makes:
                     try:
                         # CarData.loc[CarData.index[5], 'Make'] = "TESTTEST"
                         df.loc[df.index[j],variable] = entry
+                        print("First Entry Item: ",df.loc[df.index[j],variable])
                         # print("!!!!!!!!!!!!!Entry!!!!!!!!!!!!!!!: ",df.loc[df.index[j],variable])
                         # df[variable].loc[j] = entry
                         #print("DATAFRAME AT VARIABLE AND J: ",df[variable][j])
@@ -159,7 +162,7 @@ for make in makes:
                         print("Type Error Appeared")
                         #df[variable][j] = "Null"
                         pass
-                
+                print("Second Entry Item: ",df.loc[df.index[j],variable])
 # =============================================================================
 #                 else:
 #                     print("ENTERED ELSE STATEMENT")
@@ -167,13 +170,11 @@ for make in makes:
 # =============================================================================
                         
                     
-duration = 100000  # milliseconds
+duration = 10000  # milliseconds
 freq = 550  # Hz
 winsound.Beep(freq, duration)
                         
-df.to_csv("2019Data.csv",index = False, sep=',', encoding='utf-8')
 
-print(df)
 
 
 
