@@ -27,9 +27,10 @@ def DataFrameBuilder():
                                         .findAll(True,{'class':'pure-u-1 pure-u-md-1-2'})[i]
                                         .get_text().strip()
                                         .split('\r\n')[0])
-    variables.insert(0,'Make')
-    variables.insert(1,'Model')
-    variables.insert(2,'Year')
+    variables.insert(0,'Price')
+    variables.insert(1,'Make')
+    variables.insert(2,'Model')
+    variables.insert(3,'Year')
     CarData = pd.DataFrame(columns = variables,index=range(2000))
 
     return(CarData)
@@ -121,16 +122,20 @@ row = 0
 for make in makes:
     urls = UrlSeeker(make,year)
     models = ModelList(make,year)
-    time.sleep(5)
+    time.sleep(10)
     
     # Using numerical indexing because urls and models should be the same length
     if(models):
         for i in range(len(models)):
             url = urls[i]
             model = models[i]
-            time.sleep(3)
+            time.sleep(10)
             NewResponse = requests.get(url)
             
+            # Yes, I'm sorry. It's hideous code. But it works
+            price = BeautifulSoup(NewResponse.text,'html.parser').findAll(True,{'class':'main-car-details'})[0].get_text().strip().split('from ')[1].split('\r\n')[0]
+            
+            df.loc[df.index[row],'Price'] = price
             df.loc[df.index[row],'Make'] = make
             df.loc[df.index[row],'Model'] = model
             df.loc[df.index[row],'Year'] = year
