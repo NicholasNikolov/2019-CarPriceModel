@@ -48,10 +48,10 @@ def MakeList():
 # Method to get all of the models in the particular make. Works similar to URLSeeker
 def ModelList(make,year):
     url = 'https://www.carspecs.us/'
-    response = requests.get(url)
+    #response = requests.get(url)
     
     # The beautiful soup result of parsing the main page. Will search for links to pursue
-    bsMain = BeautifulSoup(response.text,"html.parser")
+    #bsMain = BeautifulSoup(response.text,"html.parser")
     make = make
     make = make.replace(" ","-")
     year = str(year)
@@ -79,7 +79,7 @@ def ModelList(make,year):
 def UrlSeeker(make,year):
     # Create reference to main webpage that will be used to seek out various car makes and models
     url = 'https://www.carspecs.us/'
-    response = requests.get(url)
+    #response = requests.get(url)
     
     # The beautiful soup result of parsing the main page. Will search for links to pursue
     # bsMain = BeautifulSoup(response.text,"html.parser")
@@ -114,9 +114,10 @@ def UrlSeeker(make,year):
     
 df = DataFrameBuilder()
 dfColumns = df.columns
-#makes = MakeList()
-makes = ['Acura']
+makes = MakeList()
+
 year = 2019
+row = 0
 for make in makes:
     urls = UrlSeeker(make,year)
     models = ModelList(make,year)
@@ -130,12 +131,14 @@ for make in makes:
             time.sleep(3)
             NewResponse = requests.get(url)
             
+            df.loc[df.index[row],'Make'] = make
+            df.loc[df.index[row],'Model'] = model
+            df.loc[df.index[row],'Year'] = year
+            
             dataLength = len(BeautifulSoup(NewResponse.text,'html.parser').findAll(True,{'class':'pure-u-1 pure-u-md-1-2'}))
             
             #for j in range(dataLength-1):
-            j = 0
-            count = 0
-            while j < dataLength-1:
+            for j in range(dataLength-1):
                 #print("Third Entry Item: ",df.loc[df.index[j-1],variable])
                 try:
                     entry = BeautifulSoup(NewResponse.text,'html.parser').findAll(True,{'class':'pure-u-1 pure-u-md-1-2'})[j].get_text().strip().split('\r\n')[1]
@@ -144,7 +147,7 @@ for make in makes:
                 except IndexError:
                     #"Index Error for mismatch count of pure-u-1 pure-u-md-1-2"
                     pass
-                print("Fourth Entry Item: ",df.loc[df.index[j-1],variable])
+                #print("Fourth Entry Item: ",df.loc[df.index[j-1],variable])
 
                 print(j)
                 print("Variable: ",variable," Entry: ", entry)
@@ -155,8 +158,8 @@ for make in makes:
                 if variable in df.columns:
                     try:
                         # CarData.loc[CarData.index[5], 'Make'] = "TESTTEST"
-                        df.loc[df.index[j],variable] = entry
-                        print("First Entry Item: ",df.loc[df.index[j],variable])
+                        df.loc[df.index[row],variable] = entry
+                        #print("First Entry Item: ",df.loc[df.index[j],variable])
                         # print("!!!!!!!!!!!!!Entry!!!!!!!!!!!!!!!: ",df.loc[df.index[j],variable])
                         # df[variable].loc[j] = entry
                     
@@ -164,14 +167,9 @@ for make in makes:
                         print("Type Error Appeared")
                         #df[variable][j] = "Null"
                         pass
-                print("Second Entry Item: ",df.loc[df.index[j],variable])
-                count = count + 1
-                if count == 72:
-                    j+=1
-                    count = 0
-                print("Fourth Entry: ",df.loc[df.index[0],'Passenger Capacity'])
-                print("Count Value: ",count)
-                
+                #print("Second Entry Item: ",df.loc[df.index[j],variable])
+                #print("Fourth Entry: ",df.loc[df.index[0],'Passenger Capacity'])
+            row += 1
 # =============================================================================
 #                 else:
 #                     print("ENTERED ELSE STATEMENT")
@@ -179,12 +177,12 @@ for make in makes:
 # =============================================================================
                         
                     
+
+                        
+df.to_csv("2019Data.csv")
+
 duration = 10000  # milliseconds
 freq = 550  # Hz
 winsound.Beep(freq, duration)
-                        
-df.to_csv("test.csv")
-
-
 
 
