@@ -129,19 +129,25 @@ for make in makes:
         for i in range(len(models)):
             url = urls[i]
             model = models[i]
-            
+            time.sleep(3)
             NewResponse = requests.get(url)
             
             dataLength = len(BeautifulSoup(NewResponse.text,'html.parser').findAll(True,{'class':'pure-u-1 pure-u-md-1-2'}))
             
             for j in range(dataLength-1):
+                try:
+                    entry = BeautifulSoup(NewResponse.text,'html.parser').findAll(True,{'class':'pure-u-1 pure-u-md-1-2'})[j].get_text().strip().split('\r\n')[1]
+                    variable = BeautifulSoup(NewResponse.text,'html.parser').findAll(True,{'class':'pure-u-1 pure-u-md-1-2'})[j].get_text().strip().split('\r\n')[0]
+
+                except IndexError:
+                    "Index Error for mismatch count of pure-u-1 pure-u-md-1-2"
+                    pass
+
                 print(j)
                 print("Variable: ",variable," Entry: ", entry)
                 print("Entry Type: ",type(entry))
                 print("Make: ",make)
                 print("Model: ",model)
-                entry = BeautifulSoup(NewResponse.text,'html.parser').findAll(True,{'class':'pure-u-1 pure-u-md-1-2'})[j].get_text().strip().split('\r\n')[1]
-                variable = BeautifulSoup(NewResponse.text,'html.parser').findAll(True,{'class':'pure-u-1 pure-u-md-1-2'})[j].get_text().strip().split('\r\n')[0]
 
                 if variable in df.columns:
                     try:
