@@ -57,7 +57,6 @@ def ModelList(make,year):
     year = str(year)
     
     ModelPageUrl = url + "cars/" + year + "/" + make.lower()
-    print(ModelPageUrl)
     NewResponse = requests.get(ModelPageUrl)
     bsModels = BeautifulSoup(NewResponse.text,'html.parser')
     LinkList = bsModels.findAll('a')
@@ -95,7 +94,7 @@ def UrlSeeker(make,year):
     bsModels = BeautifulSoup(NewResponse.text,'html.parser')
     LinkList = bsModels.findAll('a')
     
-    print("THIS IS IT",ModelPageUrl)
+    print("PAGE URL: ",ModelPageUrl)
     ModelLowIndex = [x for x, y in enumerate(bsModels.findAll('a')) if 'Cars' in y][0]
     ModelHighIndex = [x for x, y in enumerate(bsModels.findAll('a')) if 'Privacy Policy' in y][0]
     
@@ -119,7 +118,6 @@ makes = MakeList()
 
 year = 2019
 for make in makes:
-    print(make)
     urls = UrlSeeker(make,year)
     models = ModelList(make,year)
     time.sleep(5)
@@ -151,7 +149,11 @@ for make in makes:
 
                 if variable in df.columns:
                     try:
-                        df[variable][j] = entry
+                        # CarData.loc[CarData.index[5], 'Make'] = "TESTTEST"
+                        df.loc[df.index[j],variable] = entry
+                        # print("!!!!!!!!!!!!!Entry!!!!!!!!!!!!!!!: ",df.loc[df.index[j],variable])
+                        # df[variable].loc[j] = entry
+                        #print("DATAFRAME AT VARIABLE AND J: ",df[variable][j])
                     
                     except TypeError:
                         print("Type Error Appeared")
@@ -165,13 +167,13 @@ for make in makes:
 # =============================================================================
                         
                     
-duration = 1000  # milliseconds
-freq = 440  # Hz
+duration = 100000  # milliseconds
+freq = 550  # Hz
 winsound.Beep(freq, duration)
                         
 df.to_csv("2019Data.csv",index = False, sep=',', encoding='utf-8')
 
-
+print(df)
 
 
 
