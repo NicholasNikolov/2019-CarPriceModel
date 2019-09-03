@@ -117,7 +117,7 @@ df = DataFrameBuilder()
 dfColumns = df.columns
 makes = MakeList()
 
-year = 2019
+year = 2018
 row = 0
 for make in makes:
     urls = UrlSeeker(make,year)
@@ -133,9 +133,13 @@ for make in makes:
             NewResponse = requests.get(url)
             
             # Yes, I'm sorry. It's hideous code. But it works
-            price = BeautifulSoup(NewResponse.text,'html.parser').findAll(True,{'class':'main-car-details'})[0].get_text().strip().split('from ')[1].split('\r\n')[0]
-            
-            df.loc[df.index[row],'Price'] = price
+            try:
+                price = BeautifulSoup(NewResponse.text,'html.parser').findAll(True,{'class':'main-car-details'})[0].get_text().strip().split('from ')[1].split('\r\n')[0]
+                df.loc[df.index[row],'Price'] = price
+            except IndexError:
+                pass
+                print("No Price found")
+                
             df.loc[df.index[row],'Make'] = make
             df.loc[df.index[row],'Model'] = model
             df.loc[df.index[row],'Year'] = year
@@ -184,7 +188,7 @@ for make in makes:
                     
 
                         
-df.to_csv("2019Data.csv")
+df.to_csv("2018Data.csv")
 
 duration = 10000  # milliseconds
 freq = 550  # Hz
