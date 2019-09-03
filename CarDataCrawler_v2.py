@@ -117,7 +117,7 @@ df = DataFrameBuilder()
 dfColumns = df.columns
 makes = MakeList()
 
-year = 2018
+year = 2017
 row = 0
 for make in makes:
     urls = UrlSeeker(make,year)
@@ -188,7 +188,7 @@ for make in makes:
                     
 
                         
-df.to_csv("2018Data.csv")
+df.to_csv("2017Data.csv")
 
 duration = 10000  # milliseconds
 freq = 550  # Hz
