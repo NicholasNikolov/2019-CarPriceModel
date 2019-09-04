@@ -1,13 +1,14 @@
 # CarPriceModel
  
-This is a three part project which includes web-scraping, data-cleaning, and statistical modeling.
+This is a three part project which includes web-scraping, data-cleaning, and statistical modeling. The data in its raw form appears as .csv files with naming convention: 20XXData where XX is used to determine the year of the car model. The data will be combined in a full dataset for data analysis.
 
-1. Web Scraper [Complete]
+1. Web Scraper [Complete - 03 SEP 2019]
 - Scrapes the carspecs site (carspecs.us) for car data.
 - As of 03 SEP 2019, the web scraper functions as expected.
 - Some improvements might be made in the future to make the code more resilient to changes on the website.
 - Inputs data into one of 75 categories
 - NOTE: Use CarDataCrawler_v2.py if you want to test out the web scraper.
+- CarDataCrawler.py is depcrecated and the Web_Scraper.ipynb jupyter notebook was used for testing the code.
 
 2. Data Cleaner [Not Started]
 - Some data from the web-scraper is necessary but missing. I need to determine a method to pull price data for missing values. This might be easiest done manually
