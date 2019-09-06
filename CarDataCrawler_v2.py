@@ -116,7 +116,8 @@ def UrlSeeker(make,year):
 df = DataFrameBuilder()
 dfColumns = df.columns
 makes = MakeList()
-
+makes = makes[53:]
+print(makes)
 year = 2016
 row = 0
 for make in makes:
@@ -130,9 +131,17 @@ for make in makes:
             url = urls[i]
             model = models[i]
             time.sleep(10)
-            NewResponse = requests.get(url)
             
-            # Yes, I'm sorry. It's hideous code. But it works
+            # The below exception catch has to do with the website blocking the bot for too
+            # many requests.
+            try:
+                NewResponse = requests.get(url)
+            
+            except ConnectionError:
+                time.sleep(25)
+                print("Connection error. Trying again in 25 seconds.")
+            
+            # Yes, I'm sorry. It's hideous code. But it works. The below code extracts the price for the model
             try:
                 price = BeautifulSoup(NewResponse.text,'html.parser').findAll(True,{'class':'main-car-details'})[0].get_text().strip().split('from ')[1].split('\r\n')[0]
                 df.loc[df.index[row],'Price'] = price
@@ -188,7 +197,7 @@ for make in makes:
                     
 
                         
-df.to_csv("2016Data.csv")
+df.to_csv("2016Data2.csv")
 
 duration = 10000  # milliseconds
 freq = 550  # Hz
