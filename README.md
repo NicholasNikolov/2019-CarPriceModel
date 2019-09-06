@@ -10,11 +10,11 @@ This is a three part project which includes web-scraping, data-cleaning, and sta
 - NOTE: Use CarDataCrawler_v2.py if you want to test out the web scraper.
 - CarDataCrawler.py is depcrecated and the Web_Scraper.ipynb jupyter notebook was used for testing the code.
 
-2. Data Cleaner [Not Started]
+2. Data Cleaner [In Progress - Started 05 SEP 2019]
 - Some data from the web-scraper is necessary but missing. I need to determine a method to pull price data for missing values. This might be easiest done manually
 - There are entries that have a lot of spaces, unnecessarily
 - ALL entries are strings including horspower and torque. This will need to be adjusted.
-- A lot of missing data that needs to be cleaned.
+- A lot of missing data that needs to be dealt with. Some data is important and will be manually added. I am color coding manually added data in orange. I won't fill all missing data but there are a few variables that are priority for me. Namely; MPG and HP. 0-60 and Torque are also important but not priority.
 
 3. Statistical Modeling [Not Started]
 - An optimal model will be determined to fit the data. 
