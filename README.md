@@ -10,15 +10,28 @@ This is a three part project which includes web-scraping, data-cleaning, and sta
 - NOTE: Use CarDataCrawler_v2.py if you want to test out the web scraper.
 - CarDataCrawler.py is depcrecated and the Web_Scraper.ipynb jupyter notebook was used for testing the code.
 
-2. Data Cleaner [In Progress - Started 05 SEP 2019]
-- Some data from the web-scraper is necessary but missing. I need to determine a method to pull price data for missing values. This might be easiest done manually
-- There are entries that have a lot of spaces, unnecessarily
-- ALL entries are strings including horspower and torque. This will need to be adjusted.
-- A lot of missing data that needs to be dealt with. Some data is important and will be manually added. I am color coding manually added data in orange. I won't fill all missing data but there are a few variables that are priority for me. Namely; MPG and HP. 0-60 and Torque are also important but not priority.
+2. Data Cleaner [Complete - 05 SEP 2019 - 29 SEP 2019]
+- Missing price data was manually filled through online research. The data cleaning code, by default, removes all entries with this     
+  missing variable because it is intended as the response variable.
+- Cleaned up leftover HTML code and string values and converted to string where applicable.
+- Most missing data filled where viable. Numerous approaches were pursued depending on the situation.
+     + Where a logical collinear relation existed (and where there were not a large number of missing values) a 
+       simple regression model was used to fill the missing values.
+     + Where a qualitative identifier existed (e.g. Gas, electric, hybrid engine), missing values were filled by the average of their
+       respective groups (e.g. missing MPG's of hybrids were filled with the mean of all hybrids in the dataset).
+     + Where no logical collinear relation existed, and there was not a known qualitative identifier, the missing values were filled
+       using the mean of the column.
+ - There may be some additional work necessary to extract a bit more data out of the dataset. Namely, there remain some qualitative
+   variables that have not been extracted (E.g., transmission and tire size). These may be useful but would require me to extract
+   relevant text. In the case of transmission, the process would be more complex than simply using get_dummies because there are some
+   entries where speed is capitalized and some where it is not. There is already a wide variety of values which might become useless if
+   they approach N ~= 1200.
+ - The electric vehicles cannot have values for some columns. For example, RPM and fuel tank capacity are not relevant.
+ - Output of this step is CleanData.csv
+ - Input of this step is FullData.csv
 
 3. Statistical Modeling [Not Started]
-- An optimal model will be determined to fit the data. 
-- There are two modeling approaches that will be considered/followed. One will attempt to fit to all data while the other will fit to more average car models (I.e., do not fit to $1M Ferraris).
+- An optimal model will be determined to fit the data.
 
 
 
