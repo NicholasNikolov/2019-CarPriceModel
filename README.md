@@ -10,7 +10,7 @@ This is a three part project which includes web-scraping, data-cleaning, and sta
 - NOTE: Use CarDataCrawler_v2.py if you want to test out the web scraper.
 - CarDataCrawler.py is depcrecated and the Web_Scraper.ipynb jupyter notebook was used for testing the code.
 
-2. Data Cleaner [Complete - 05 SEP 2019 - 29 SEP 2019]
+2. Data Cleaner [Complete - 29 SEP 2019]
 - Missing price data was manually filled through online research. The data cleaning code, by default, removes all entries with this     
   missing variable because it is intended as the response variable.
 - Cleaned up leftover HTML code and string values and converted to string where applicable.
@@ -30,13 +30,19 @@ This is a three part project which includes web-scraping, data-cleaning, and sta
  - Output of this step is CleanData.csv
  - Input of this step is FullData.csv
 
-3. Statistical Modeling [Not Started]
-- An optimal model will be determined to fit the data.
+3. Statistical Modeling [Complete - 29 NOV]
+- Unfortunately neither supervised nor unsupervised models really seemed fitting.
+- My goal was to optimize on the basis of a few characteristics (namely MPG, 0-60mph, torque, and price). I weighted price and mpg  
+  higher than other stuff. 
+- The approach wasn't the most statistically sound but it still lends some insight into the data. Overall it works for comparisons 
+  between cars. E.g., when comparing the Ford Fusion Hybrid and Toyota Camry Hybrid, the model accurately gave a better score to the 
+  Camry which had superior performance and fuel economy.
+- If I think of a superior approach I'll return to this project. Otherwise, ScoredEntries.csv now holds the sorted and scored car 
+  models.
 
 
 
-
-Project Progress: In-Progress
+Project Progress: Complete
 
 Data Source: https://www.carspecs.us
  Note: Above data source is not a formatted source like other projects. The data was taken using a web scraper.
