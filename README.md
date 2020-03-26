@@ -39,10 +39,18 @@ This is a three part project which includes web-scraping, data-cleaning, and sta
   Camry which had superior performance and fuel economy.
 - If I think of a superior approach I'll return to this project. Otherwise, ScoredEntries.csv now holds the sorted and scored car 
   models.
+  
+4. Statistical Updates/Review of Stage 3 [Not Started]
+- Initiating a more specific and accurate approach to the statistical modeling process -- I was more excited about my first web  
+  scraper and formatting data (originally was thinking to upload to Kaggle. I might still do that!)
+- Researching a more statistically sound method of determining optimal car purchases or developing a script based on a mathematical
+  model. Ultimately this project was the largest personal data-related project I've undertaken. I still need to take a more mature 
+  approach with the modeling. This will require more research (I got excited and was jumping from project to project around when this  
+  finally came to a close).
 
 
 
-Project Progress: Complete
+Project Progress: Reopened [Originally Complete 29 NOV - Scheduled to reopen when my Coronavirus script is done collecting data]
 
 Data Source: https://www.carspecs.us
  Note: Above data source is not a formatted source like other projects. The data was taken using a web scraper.
